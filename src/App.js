@@ -1,4 +1,5 @@
-import styled, { keyframes } from 'styled-components/macro';
+import { useState } from 'react';
+import styled, { keyframes, ThemeProvider } from 'styled-components/macro';
 import GlobalStyle from './GlobalStyle';
 import logo from './logo.svg';
 
@@ -15,14 +16,14 @@ const Wrapper = styled.div`
   text-align: center;
 
   header {
-    background-color: #282c34;
+    background-color: ${(props) => props.theme.backgroundColor};
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
-    color: white;
+    color: ${(props) => props.theme.color};
   }
 
   header img {
@@ -37,13 +38,24 @@ const Wrapper = styled.div`
   }
 `;
 
+const light = {
+  backgroundColor: 'creme',
+  color: 'hotpink',
+};
+
+const dark = {
+  backgroundColor: 'black',
+  color: 'white',
+};
+
 const Link = styled.a`
   color: #61dafb;
 `;
 
 function App() {
+  const [theme, setTheme] = useState(dark);
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Wrapper>
         <header>
@@ -61,8 +73,14 @@ function App() {
             Learn React
           </Link>
         </header>
+        <button
+          type="button"
+          onClick={() => setTheme(theme === dark ? light : dark)}
+        >
+          Change Theme
+        </button>
       </Wrapper>
-    </>
+    </ThemeProvider>
   );
 }
 
